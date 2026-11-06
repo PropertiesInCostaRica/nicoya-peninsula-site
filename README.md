@@ -1,2 +1,2 @@
 # nicoya-peninsula-site
-Website for properties-in-costarica.com, Nicoya Penisula real estate by PCR
+Website for properties-in-costa-rica.com, Nicoya Penisula real estate by PCR
