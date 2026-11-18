@@ -20,7 +20,7 @@ c=m.group(2)
 alt=re.search(r'alt="([^"]*)"',c).group(1)
 c=re.sub(r'<p class="photo">.*?</p>\n?','',c,flags=re.S)
 def pb(fs): return '<p class="photo">\n'+''.join('<a href="%s/opt/%s"><img src="%s/opt/thumbs/%s" alt="%s" width="250" height="187"></a>'%(CDN,f,CDN,f,alt) for f in fs)+'\n<span class="to_enlarge">Click on the pictures to enlarge</span>\n</p>\n'
-G=[[1,9,20,21],[4,15,12,18],[5,16,17,6,7,23,24,25,26,27,28,29],[2,10,11,13,14,19,22],[36,37,38],[3,30,31,32,33,34,35],[8]]
+G=[[1,20,21],[4,15,12,18,10,35],[5,16,17,6,7,23,24,25,26,27,28,29],[2,11,13,14,19,22],[36,37,38],[3,30,31,32,33,34],[9,8]]
 assert sorted(x for g in G for x in g)==list(range(1,N+1))
 def blocks(g):
     fs=['photo-%d.jpg'%i for i in g]
