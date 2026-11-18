@@ -20,15 +20,18 @@ c=m.group(2)
 alt=re.search(r'alt="([^"]*)"',c).group(1)
 c=re.sub(r'<p class="photo">.*?</p>\n?','',c,flags=re.S)
 def pb(fs): return '<p class="photo">\n'+''.join('<a href="%s/opt/%s"><img src="%s/opt/thumbs/%s" alt="%s" width="250" height="187"></a>'%(CDN,f,CDN,f,alt) for f in fs)+'\n<span class="to_enlarge">Click on the pictures to enlarge</span>\n</p>\n'
-photos=['photo-%d.jpg'%i for i in range(1,N+1)]
-chunks=[photos[i:i+3] for i in range(0,N,3)]
+G=[[1,9,2],[4,13,14,15],[5,16,17,20,21,6,18,19,22,23,24,25,26],[11,12,32,33,34,10],[7,27,31],[3,28,29,30,35,36],[38,37,8]]
+assert sorted(x for g in G for x in g)==list(range(1,N+1))
+def blocks(g):
+    fs=['photo-%d.jpg'%i for i in g]
+    return ''.join(pb(fs[i:i+3]) for i in range(0,len(fs),3))
 parts=re.split(r'(?=<p>)',c)
 out='';k=0
 for p in parts:
-    if p.startswith('<p>') and k<len(chunks) and not p.startswith('<p><strong>Property Highlights'): out+=pb(chunks[k]); k+=1
     out+=p
-endi=out.rfind('<p>')
-out=out[:endi]+''.join(pb(x) for x in chunks[k:])+out[endi:]
+    if p.startswith('<p>') and k<len(G) and not p.startswith('<p><strong>Property Highlights'):
+        out+=blocks(G[k]); k+=1
+assert k==len(G),'parrafos: %d'%k
 s=s[:m.start(2)]+out+s[m.end(2):]
 io.open(P,'w',encoding='utf-8',errors='surrogateescape').write(s)
 os.system('chown -R git:git %s %s; find %s -type d -exec chmod 775 {} +; find %s -type f -exec chmod 664 {} +; chmod 664 %s; /usr/local/bin/pcr-git-respaldo.sh >/dev/null 2>&1'%(D,P,D,D,P))
