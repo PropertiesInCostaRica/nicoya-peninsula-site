@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-# Add the Whale Bay Villa card at the top of the ocean view and sea side pages
+# Add the Whale Bay Villa card at the top of the ocean view, sea side and ocean front pages
 import re, glob, shutil, subprocess, time
 W = '/var/www/propertiesincostarica.com/web/'
-PAGES = [W + 'homes/ocean_view_homes.html', W + 'homes/sea_side_homes.html']
+PAGES = [W + 'homes/ocean_view_homes.html', W + 'homes/sea_side_homes.html', W + 'homes/ocean_front_homes.html']
 art = re.compile(r'(<!--[^>]*INI[^>]*-->\s*)?<article class="listing".*?</article>(\s*<!--[^>]*FIN[^>]*-->)?', re.S)
 card = None
 for f in sorted(glob.glob(W + '*.htm*') + glob.glob(W + '*/*.htm*')):
