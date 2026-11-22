@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-# Previews only: Whale Bay photo in the Seller Financing banner, and more spacing in the Articles list.
+# Previews only: Whale Bay photo in the Seller Financing banner, spacing in the Articles list,
+# and 'Can't find the right home?' (not 'beach home') on all 6 previews.
 import re
 W = '/var/www/propertiesincostarica.com/web/'
 P = W + 'financing-nuevo.html'
@@ -19,4 +20,15 @@ if 'margin:10px 0;line-height:1.5' not in s:
     s = s.replace('</head>', CSS, 1)
     open(P, 'w', encoding='utf-8', errors='surrogateescape').write(s)
 print('Articulos con mas espacio: SI')
+n = 0
+for rel in ['financing-nuevo.html', 'articles/index-nuevo.htm', 'videos/index-nuevo.html', 'links-nuevo.html', 'info/sanjose-nuevo.html', 'map-nuevo.html']:
+    P = W + rel
+    try:
+        s = open(P, encoding='utf-8', errors='surrogateescape').read()
+    except IOError:
+        continue
+    s2 = re.sub(r'(find the right) beach (home)', r'\1 \2', s, flags=re.I)
+    if s2 != s:
+        open(P, 'w', encoding='utf-8', errors='surrogateescape').write(s2); n += 1
+print('Paginas con "Can\'t find the right home?": %d' % n)
 print('LISTO (solo vistas previas)')
