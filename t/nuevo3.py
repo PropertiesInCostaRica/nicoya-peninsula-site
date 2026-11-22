@@ -3,7 +3,7 @@
 # Live pages are NOT changed.
 import re, os, html
 W = '/var/www/propertiesincostarica.com/web/'
-PAGES = ['map.html', 'financing.html', 'info/sanjose.html', 'articles/index.htm', 'videos/index.html', 'links.html']
+PAGES = ['financing.html']
 def rd(p): return open(p, encoding='utf-8', errors='surrogateescape').read()
 home = rd(W + 'index.html')
 hb = home.index('<body'); hm = home.index('<main id="main">') + len('<main id="main">')
@@ -22,7 +22,16 @@ CSS = '''<style>
 </style>'''
 def region(s, n):
     m = re.search(r'<!--\s*InstanceBeginEditable name="%s"\s*-->(.*?)<!--\s*InstanceEndEditable\s*-->' % n, s, re.S)
-    return m.group(1) if m else ''
+    if m: return m.group(1)
+    i = s.find('<!-- InstanceBeginEditable name="%s" -->' % n)
+    if i < 0: return ''
+    i = s.index('-->', i) + 3
+    for end in ('<!--#################Article FIN-->', '<footer'):
+        j = s.find(end, i)
+        if j > 0:
+            c = s[i:j]
+            return c[:c.rfind('</div>')] if c.rstrip().endswith('</div>') else c
+    return ''
 for rel in PAGES:
     p = W + rel
     if not os.path.exists(p):
