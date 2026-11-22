@@ -58,12 +58,12 @@ for rel, intro in PAGES.items():
     if mk: meta += '<meta name="keywords" content="' + mk.group(1) + '">\n'
     out = out.replace('</TITLE>', '</TITLE>\n' + meta, 1)
     out = re.sub(r'(<h1 id="sp-h1">.*?</h1>\s*)<p>.*?</p>', lambda m: m.group(1) + '<p>' + intro + '</p>', out, count=1, flags=re.S)
-    # relative paths: beach.html lives at the root; pages in folders need a base
+    # relative links inside the page content: make them work from the same folder
     depth = rel.count('/')
     if depth:
-        out = out.replace('<head>', '<head>\n<base href="https://www.propertiesincostarica.com/' + rel.rsplit('/', 1)[0] + '/">', 1)
-        out = re.sub(r'(src|srcset|href)="(images/title-bg)', r'\1="/\2', out)
-        out = re.sub(r'(\d+w, )(images/title-bg)', r'\1/\2', out)
+        folder = '/' + rel.rsplit('/', 1)[0] + '/'
+        fix = lambda c: re.sub(r'(href|src|data-src)="(?!https?:|/|#|mailto:|tel:|javascript:)([^"]+)"', lambda m: m.group(1) + '="' + folder + m.group(2) + '"', c)
+        out = out.replace(content, fix(content), 1)
     np = re.sub(r'\.(html?)$', r'-nuevo.\1', p)
     open(np, 'w', encoding='utf-8', errors='surrogateescape').write(out)
     print('Vista previa: https://www.propertiesincostarica.com/' + np[len(W):])
