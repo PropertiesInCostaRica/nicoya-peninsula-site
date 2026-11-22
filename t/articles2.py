@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# 1) Homepage: put the Articles page link back (footer menu and blog section).
+# 1) Homepage: restore the full old footer menu and an Articles link in the blog section.
 # 2) Articles page: add the "Whose Name" blog article at the top of the list.
 import os, shutil, subprocess, time
 W = '/var/www/propertiesincostarica.com/web/'
@@ -18,16 +18,24 @@ for n in ('index.html', 'index.htm', 'index.php'):
 if not home:
     print('Inicio: no encontrado')
 else:
+    import re
     s = rd(home); c = 0
-    if 'articles/index.htm' not in s:
-        old = '<a href="https://www.propertiesincostarica.com/blog/">BLOG</a><span aria-hidden="true">|</span>'
-        if old in s:
-            s = s.replace(old, old + '\n      <a href="' + ART + '">ARTICLES</a><span aria-hidden="true">|</span>', 1); c += 1
-        old2 = '<a class="ns-more" href="https://www.propertiesincostarica.com/blog/">READ ALL ARTICLES ›</a>'
-        if old2 in s:
-            s = s.replace(old2, '<span><a class="ns-more" href="' + ART + '">ARTICLES ›</a> &nbsp; ' + old2 + '</span>', 1); c += 1
-        if c: wr(home, s)
-    print('Inicio (%s): enlaces agregados %d' % (os.path.basename(home), c))
+    B = 'https://www.propertiesincostarica.com/'
+    items = [('our.html','OUR COMPANY'),('listings.html','LISTINGS'),('list_your_properties.html','LIST YOUR PROPERTY'),
+             ('faq.html','F.A.Q.'),('map.html','C.R MAP'),('financing.html','SELLER FINANCING'),
+             ('info/sanjose.html','SAN JOSE ATTRACTIONS'),('blog/','BLOG'),('articles/index.htm','ARTICLES'),
+             ('videos/index.html','VIDEOS'),('links.html','LINKS'),('inforequest.html','INFO REQUEST'),
+             ('testimonials.html','TESTIMONIALS'),('contact.html','CONTACT US')]
+    sep = '<span aria-hidden="true">|</span>'
+    body = ('\n      ' + sep + '\n      ').join('<a href="%s%s">%s</a>' % (B, h, t) for h, t in items)
+    m = re.search(r'(<nav class="ft-nav"[^>]*>)(.*?)(</nav>)', s, re.S)
+    if m:
+        s = s[:m.start(2)] + '\n      ' + body + '\n    ' + s[m.end(2):]; c += 1
+    old2 = '<a class="ns-more" href="https://www.propertiesincostarica.com/blog/">READ ALL ARTICLES ›</a>'
+    if old2 in s and 'ARTICLES ›</a> &nbsp;' not in s:
+        s = s.replace(old2, '<span><a class="ns-more" href="' + ART + '">ARTICLES ›</a> &nbsp; ' + old2 + '</span>', 1); c += 1
+    if c: wr(home, s)
+    print('Inicio (%s): cambios %d (menu de abajo con 14 enlaces)' % (os.path.basename(home), c))
 
 p = W + 'articles/index.htm'
 s = rd(p)
