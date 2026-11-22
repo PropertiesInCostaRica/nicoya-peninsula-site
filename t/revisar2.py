@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-# READ ONLY security check: logins, SSH attempts, database access attempts. Changes nothing.
+# READ ONLY security check of the LEADS database server (PCR 2020): logins, SSH attempts,
+# who is allowed into MySQL, who is connected now, and any trace of Daniel's IP. Changes nothing.
 import subprocess, re, glob, collections, os
 def sh(c):
     try: return subprocess.check_output(c, shell=True, stderr=subprocess.STDOUT).decode('utf-8', 'replace')
@@ -29,4 +30,13 @@ lines = t.strip().splitlines() if t.strip() else []
 ok200 = [l for l in lines if re.search(r'" 200 ', l)]
 print('Intentos: %d   Respuestas exitosas (200): %d' % (len(lines), len(ok200)))
 for l in ok200[-5:]: print('  ' + l[:200])
+print('=== 6. Base de leads: usuarios y desde donde pueden entrar ===')
+print(sh("mysql -N -e \"SELECT user, host FROM mysql.user ORDER BY host, user\" 2>&1 | head -40"))
+print('=== 7. Base de leads: quien esta conectado ahora ===')
+print(sh("mysql -N -e \"SELECT user, SUBSTRING_INDEX(host, ':', 1) h, db, COUNT(*) FROM information_schema.processlist GROUP BY user, h, db\" 2>&1 | head -30"))
+print('=== 8. Rastros de la IP de Daniel (201.196.88.238) y del Sistema de Listing (13.58.24.8) ===')
+for ip in ('201.196.88.238', '13.58.24.8'):
+    a = sh("zcat -f /var/log/auth.log* 2>/dev/null | grep -c '%s'" % ip).strip()
+    m = sh("zcat -f /var/log/mysql/*.log* 2>/dev/null | grep -c '%s'" % ip).strip()
+    print('  %s  en SSH: %s   en logs de MySQL: %s' % (ip, a or 0, m or 0))
 print('LISTO (no se cambio nada)')
