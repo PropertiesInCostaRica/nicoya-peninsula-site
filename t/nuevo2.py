@@ -29,8 +29,10 @@ for rel in PAGES:
         print(rel + ': no existe'); continue
     s = rd(p)
     dt = region(s, 'doctitle')
-    title = (re.search(r'<title>(.*?)</title>', dt or s, re.S | re.I) or [None, 'Properties in Costa Rica'])[1].strip()
-    desc = (re.search(r'<meta\s+name="description"\s+content="([^"]*)"', s, re.I) or [None, ''])[1]
+    mt = re.search(r'<title>(.*?)</title>', dt or s, re.S | re.I)
+    title = mt.group(1).strip() if mt else 'Properties in Costa Rica'
+    md = re.search(r'<meta\s+name="description"\s+content="([^"]*)"', s, re.I)
+    desc = md.group(1) if md else ''
     h1 = re.sub(r'<[^>]+>', '', region(s, 'title')).strip() or title
     content = region(s, 'content')
     extra = region(s, 'head')
