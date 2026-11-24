@@ -23,6 +23,11 @@ if 'TnLrCVA42E3' not in s:
 out = rd(SHELL)
 for n in ['doctitle', 'head', 'title', 'code', 'price', 'features', 'content', 'hidden']:
     out = put(out, n, get(s, n))
+dt = get(out, 'doctitle')
+dt = re.sub(r'(<meta property="og:title" content=")[^"]*(")', lambda m: m.group(1) + 'Masterfully Crafted Ocean View Estate in Tango Mar, ID CODE: #3751' + m.group(2), dt)
+dt = re.sub(r'(<meta property="og:description" content=")[^"]*(")', lambda m: m.group(1) + 'Exclusive: masterfully crafted ocean view estate in Tango Mar with a 3 bedroom main house, a 2 bedroom guest casita and a 5 x 15 m pool. US$1,200,000.' + m.group(2), dt)
+dt = dt.replace('turn-key-ocean-view-estate/opt/4.jpg', 'turn-key-ocean-view-estate/opt/24.jpg')
+out = put(out, 'doctitle', dt)
 if 'Masterfully Crafted' not in out or 'whale-bay' in get(out, 'content'):
     print('Algo no se ve bien, no se cambio nada'); raise SystemExit
 shutil.copy(P, '/root/respaldos/abundance.html-' + time.strftime('%Y%m%d-%H%M%S'))
