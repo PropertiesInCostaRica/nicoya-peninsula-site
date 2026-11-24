@@ -19,15 +19,14 @@ blocks = list(re.finditer(r'<p class="photo">.*?</p>', s, re.S))
 if len(blocks) == len(ROWS):
     out = s[:blocks[0].start()]
     for i, (m, nums) in enumerate(zip(blocks, ROWS)):
-        imgs = '\n'.join('  <a href="%s%d.jpg"><img src="%sthumbs/%d.jpg" width="250" height="187" alt=""/></a>' % (C, n, C, n) for n in nums)
-        span = '\n  <span class="to_enlarge">Click on the pictures to enlarge</span>' if i == 0 else ''
-        out += '<p class="photo">\n' + imgs + span + '\n</p>' + s[m.end():(blocks[i + 1].start() if i + 1 < len(blocks) else len(s))]
+        alt = 'Ocean view estate, pool, guest casita, Tango Mar, Nicoya Peninsula, house for sale, Costa Rica'
+        a = lambda n: '<a href="%s%d.jpg"><img src="%sthumbs/%d.jpg" alt="%s" width="250" height="187"></a>' % (C, n, C, n, alt)
+        rows = [nums[k:k + 3] for k in range(0, len(nums), 3)]
+        html = '\n'.join('<p class="photo">\n' + ''.join(a(n) for n in r) + ('\n<span class="to_enlarge">Click on the pictures to enlarge</span>' if i == 0 and j == 0 else '') + '\n</p>' for j, r in enumerate(rows))
+        out += html + s[m.end():(blocks[i + 1].start() if i + 1 < len(blocks) else len(s))]
     s = out
 else:
     print('Grupos de fotos: %d, no se reordenaron' % len(blocks))
-css = '<style id="rows3">.photo{display:flex;flex-wrap:wrap;gap:6px}.photo a{flex:1 1 calc(33.333% - 6px);display:block}.photo a img{width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;display:block}.photo .to_enlarge{flex-basis:100%}</style>'
-if 'id="rows3"' not in s:
-    s = s.replace('</head>', css + '\n</head>', 1)
 a = s.index('<!-- InstanceBeginEditable name="content" -->')
 e = s.index('<!-- InstanceEndEditable -->', a)
 shutil.copy(P, '/root/respaldos/abundance.html-' + time.strftime('%Y%m%d-%H%M%S'))
