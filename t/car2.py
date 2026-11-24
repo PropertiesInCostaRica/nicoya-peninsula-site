@@ -15,8 +15,9 @@ txt = c[:c.index('<section class="featured_listing_of')]
 txt = re.sub(r'\s*</div>\s*$', '', txt.rstrip())
 areas = re.findall(r'<a href="([^"]+-real-estate\.html|hone-creek-carbon\.html)">([^<]+)</a>', txt)
 txt = re.sub(r'<center>.*?</center>', '', txt, flags=re.S)
-paras = re.split(r'(?<=</p>)', txt, maxsplit=1)
-intro, rest = paras[0], (paras[1] if len(paras) > 1 else '')
+k = txt.find('</p>')
+k = k + 4 if k >= 0 else 0
+intro, rest = txt[:k], txt[k:]
 pills = '<div class="car-areas"><span>Explore by area:</span>' + ''.join('<a href="/' + h + '">' + t.strip() + '</a>' for h, t in areas) + '</div>\n'
 grid = ('<section class="featured_listing_of titulo_categoria" id="gotoProperties">\n<h2>Caribbean Properties for Sale and Rent</h2>\n'
         + '\n'.join('<!--###################INI#####################-->\n' + x + '\n<!--###################FIN#####################-->' for x in cards)
