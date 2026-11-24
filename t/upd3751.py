@@ -27,7 +27,7 @@ c = get(s, 'content')
 B = re.findall(r'<p class="photo">.*?</p>', c, re.S)
 B = [re.sub(r'\s*<span class="to_enlarge">.*?</span>', '', b, flags=re.S) for b in B]
 vid = re.search(r'<iframe id="video".*?</iframe>', c, re.S)
-if len(B) < 10:
+if len(B) < 9:
     print('Encontre solo %d grupos de fotos, no se cambio nada' % len(B)); raise SystemExit
 def ph(*idx): return '\n'.join(B[i] for i in idx)
 first = B[0].replace('</p>', '\n  <span class="to_enlarge">Click on the pictures to enlarge</span>\n</p>', 1)
@@ -44,31 +44,31 @@ content = '''
 
 <p>One wing houses the primary suite, with a walk-in closet and a spacious en suite bathroom. The opposite wing features two additional king size bedrooms with en suite bathrooms, a fully equipped kitchen with two refrigerators and a pantry, and a laundry room with a washer and dryer. Both wings open onto the pool terrace.</p>
 
-''' + ph(3, 4) + '''
+''' + ph(3) + '''
 
 <p>The bedrooms can also be reached through a <strong>separate side entrance</strong>, giving renters or older children privacy to come and go independently. Each bedroom has individually controlled air conditioning, a ceiling fan, a TV with satellite service, a telephone and a safe.</p>
 
-''' + ph(5) + '''
+''' + ph(4) + '''
 
 <p>The main house also has Starlink internet, solar water heating and a water storage tank with a pump. A changing room, outdoor shower and dedicated equipment room serve the pool area.</p>
 
-''' + ph(6) + '''
+''' + ph(5) + '''
 
 <h2>Detached Guest House | 2 Bedrooms &middot; 1 Bathroom &middot; 75 m&sup2;</h2>
 
 <p>Built in 2010, the casita sits higher on the property, with its own tropical garden, a glimpse of the ocean and a <strong>wraparound terrace with hammocks</strong> for reading or taking an afternoon nap. The open plan living and dining area connects to a fully equipped kitchen, so guests can settle in and prepare their own meals.</p>
 
-''' + ph(7) + '''
+''' + ph(6) + '''
 
 <p>Both queen bedrooms have air conditioning and ceiling fans. The casita also has a full bathroom, a washer and dryer, an outdoor shower, Starlink internet, solar water heating and its own water storage tank with a pump.</p>
 
-''' + ph(8) + '''
+''' + ph(7) + '''
 
 <h2>Tango Mar and the Southern Nicoya Peninsula</h2>
 
 <p>Golf, tennis and oceanfront dining are nearby at Hotel Tango Mar. Take the popular short hike to <strong>Cocolita Falls</strong> or spend the day at nearby <strong>Playa Quizales</strong> or <strong>Playa Tambor</strong>. Cur&uacute;, Cabo Blanco and boat trips to Tortuga Island are also within reach for day trips.</p>
 
-''' + ph(9) + '''
+''' + ph(8) + '''
 
 <p>Local grocery shopping is approximately 3 km away, and <strong>C&oacute;bano is about 20 minutes away</strong> for banks, stores, churches and other everyday services. A new medical facility is currently under construction in C&oacute;bano. Both homes receive water from the Tango Mar Water Association.</p>
 
