@@ -10,6 +10,7 @@ s = open(n, encoding='utf-8', errors='surrogateescape').read()
 pic = ('<picture><img src="https://cdn.propertiesincostarica.com/properties/Images/family-estate/opt/20.jpg" alt="Atenas mountain view home with pool" '
        'width="1326" height="892" fetchpriority="high" decoding="async" style="object-fit:cover;object-position:center 45%"></picture>')
 s = re.sub(r'(<section class="sp-hero"[^>]*>\s*)<picture>.*?</picture>', lambda m: m.group(1) + pic, s, count=1, flags=re.S)
+s = s.replace('.sp-hero picture img{filter:brightness(.75)}', '.sp-hero picture img{filter:brightness(1.05) saturate(1.1)}')
 s = re.sub(r'<meta name="robots" content="noindex, nofollow">\s*', '', s)
 if 'noindex' in s or s.count('<article class="listing"') < 50 or '</html>' not in s or 'family-estate/opt/20.jpg' not in s:
     print('Algo no se ve bien, no se publico'); raise SystemExit
