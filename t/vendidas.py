@@ -45,7 +45,8 @@ for rel in SALE + RENT:
             c2, n = re.subn(r'<li>(?:(?!</li>).)*?Price(?:(?!</li>).)*?</li>', tag, c, count=1, flags=re.S)
             c = c2 if n else re.sub(r'(<ul>)', lambda m: m.group(1) + tag, c, count=1)
         out.append('<!--###################INI#####################-->\n' + c + '\n<!--###################FIN#####################-->')
-    i = s.rfind('</article>')
+    ce = s.index('<!-- InstanceEndEditable -->', s.index('<!-- InstanceBeginEditable name="content" -->'))
+    i = s.rfind('</article>', 0, ce)
     j = s.find('<!--###################FIN', i)
     i = s.find('-->', j) + 3 if 0 < j < i + 40 else i + 10
     shutil.copy(p, bk + rel)
