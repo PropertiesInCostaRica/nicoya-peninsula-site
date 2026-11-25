@@ -9,6 +9,22 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;500;700;800&family=Barlow:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="../css/style.css">
+<style id="lead-form-css">
+.lead-form{margin-top:40px;background:#fff;color:var(--ink,#0D1B22);border-radius:6px;padding:28px}
+.lead-form h3{font-family:var(--display);text-transform:uppercase;letter-spacing:.03em;font-size:22px;margin:0 0 6px}
+.lead-form .lf-note{font-size:14px;opacity:.75;margin:0 0 18px;max-width:none}
+.lead-form .lf-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.lead-form label{display:block;font-size:13px;font-weight:600;letter-spacing:.02em;margin-bottom:5px}
+.lead-form input,.lead-form select,.lead-form textarea{width:100%;box-sizing:border-box;padding:11px 12px;border:1px solid #cfd6da;border-radius:4px;font:inherit;font-size:15px;background:#fff;color:#0D1B22}
+.lead-form textarea{min-height:110px;resize:vertical}
+.lead-form .lf-full{grid-column:1/-1}
+.lead-form .lf-radio{display:flex;gap:18px;font-size:15px}
+.lead-form .lf-radio label{display:inline-flex;gap:6px;align-items:center;font-weight:400;margin:0}
+.lead-form .lf-radio input{width:auto}
+.lead-form .lf-err{color:#b3261e;font-size:14px;margin-top:10px;display:none}
+.lead-form button{margin-top:16px;cursor:pointer;background:var(--gold,#C6A15B);color:#fff;border:0}
+@media (max-width:640px){.lead-form .lf-grid{grid-template-columns:1fr}.lead-form{padding:20px}}
+</style>
 </head>
 <body>
 
@@ -146,6 +162,32 @@
         <div><span>Follow us</span><div class="soc soc-dark"><a href="https://www.facebook.com/propertiesincostarica" aria-label="Facebook" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M13.5 22v-8h2.7l.4-3.2h-3.1V8.8c0-.9.3-1.6 1.6-1.6h1.7V4.4c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.3H7.4V14h2.7v8z"/></svg></a><a href="https://www.instagram.com/propertiesincostarica" aria-label="Instagram" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.3"/></svg></a><a href="https://www.youtube.com/user/PropertiesinCR/videos" aria-label="YouTube" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M3.2 7.2C3.4 5.9 4.4 5 5.7 4.9 7.6 4.7 9.8 4.6 12 4.6s4.4.1 6.3.3c1.3.1 2.3 1 2.5 2.3.2 1.6.3 3.2.3 4.8s-.1 3.2-.3 4.8c-.2 1.3-1.2 2.2-2.5 2.3-1.9.2-4.1.3-6.3.3s-4.4-.1-6.3-.3c-1.3-.1-2.3-1-2.5-2.3C3 15.2 2.9 13.6 2.9 12s.1-3.2.3-4.8zM10 8.8v6.4l5.5-3.2z"/></svg></a><a href="https://www.linkedin.com/company/properties-in-costa-rica" aria-label="LinkedIn" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><rect x="3.5" y="9" width="3.2" height="11.5"/><circle cx="5.1" cy="5.3" r="1.9"/><path d="M9.6 9h3.1v1.6c.5-.9 1.7-1.9 3.5-1.9 3.4 0 3.9 2.2 3.9 5V20.5h-3.2v-5.8c0-1.4 0-3.1-1.9-3.1s-2.2 1.5-2.2 3v5.9H9.6z"/></svg></a></div></div>
         <div><span>Back to</span><a href="../index.html#homes">All homes for sale</a></div>
       </div>
+    <div class="lf-wrap" style="grid-column:1/-1">
+      <form class="lead-form" id="cont" method="post" action="https://www.propertiesincostarica.com/properties/forms/cgi/p_recaptcha.php" onsubmit="return leadCheck(this)">
+        <h3>Request information on ID #4220</h3>
+        <p class="lf-note">Leave your details and we will get back to you within 24 hours. Fields with * are required.</p>
+        <input type="hidden" name="subject" value="web contact - DEMO">
+        <input type="hidden" name="destin" value="1">
+        <input type="hidden" name="MM_insert" value="form1">
+        <input type="hidden" name="redirect" value="https://www.propertiesincostarica.com/thankyou.html">
+        <input type="hidden" name="CODE" value="4220">
+        <input type="hidden" name="interested_in" value="Hotel Carmen Coral, Playa Tambor">
+        <input type="hidden" name="required" value="name,last_name,email,email2,tel">
+        <div class="lf-grid">
+          <div><label for="lf-name">First name *</label><input id="lf-name" name="name" required></div>
+          <div><label for="lf-last">Last name *</label><input id="lf-last" name="last_name" required></div>
+          <div><label for="lf-email">Email *</label><input id="lf-email" type="email" name="email" required></div>
+          <div><label for="lf-email2">Confirm email *</label><input id="lf-email2" type="email" name="email2" required></div>
+          <div><label for="lf-tel">Phone / WhatsApp *</label><input id="lf-tel" type="tel" name="tel" required></div>
+          <div><label for="lf-country">Country</label><select id="lf-country" name="country"><option>United States</option><option>Canada</option><option>Costa Rica</option><option>United Kingdom</option><option>Germany</option><option>France</option><option>Spain</option><option>Italy</option><option>Netherlands</option><option>Switzerland</option><option>Mexico</option><option>Other</option></select></div>
+          <div class="lf-full"><label>I am looking to</label><div class="lf-radio"><label><input type="radio" name="looking_to" value="Buy" checked> Buy</label><label><input type="radio" name="looking_to" value="Rent"> Rent</label></div></div>
+          <div class="lf-full"><label for="lf-msg">Questions or comments</label><textarea id="lf-msg" name="suggestion_question" placeholder="I would like more information about this property."></textarea></div>
+          <div class="lf-full"><div class="g-recaptcha" data-sitekey="6LfX_QITAAAAAPMTAl4jD92TRmW4Fh9fG11fbqZ8"></div></div>
+        </div>
+        <div class="lf-err" id="lf-err"></div>
+        <button type="submit" class="btn">Send request</button>
+      </form>
+      </div>
     </div>
   </section>
 </main>
@@ -188,5 +230,9 @@
   document.addEventListener('keydown',function(e){ if(lb.hidden) return; if(e.key==='Escape') lb.hidden=true; if(e.key==='ArrowLeft') show(cur-1); if(e.key==='ArrowRight') show(cur+1); });
 })();
 </script>
+<script src="https://www.google.com/recaptcha/api.js?hl=en" async defer></script>
+<script>function leadCheck(f){var e=document.getElementById('lf-err');function bad(m){e.textContent=m;e.style.display='block';return false}
+if(f.email.value.trim().toLowerCase()!==f.email2.value.trim().toLowerCase())return bad('The two email addresses do not match.');
+if(window.grecaptcha&&!grecaptcha.getResponse())return bad('Please check the box "I am not a robot".');e.style.display='none';return true}</script>
 </body>
 </html>
