@@ -133,7 +133,7 @@
         <div><span>Back to</span><a href="../index.html#rentals">All vacation rentals</a></div>
       </div>
     <div class="lf-wrap" style="grid-column:1/-1">
-      <form class="lead-form" id="cont" method="post" action="https://www.propertiesincostarica.com/properties/forms/cgi/p_recaptcha.php" onsubmit="return leadCheck(this)">
+      <form class="lead-form" id="cont" method="post" action="https://www.propertiesincostarica.com/properties/forms/cgi/p_recaptcha.php" target="lf-frame" onsubmit="return leadCheck(this)">
         <h3>Request information on ID #3927</h3>
         <p class="lf-note">Leave your details and we will get back to you within 24 hours. Fields with * are required.</p>
         <input type="hidden" name="subject" value="web contact - DEMO">
@@ -157,6 +157,8 @@
         <div class="lf-err" id="lf-err"></div>
         <button type="submit" class="btn">Send request</button>
       </form>
+      <div class="lead-form lf-thanks" id="lf-thanks" hidden><h3>Thank you!</h3><p class="lf-note" style="font-size:16px;opacity:1">We received your request and will contact you within 24 hours. For a faster answer, write us on WhatsApp at +506 8822 5061.</p></div>
+      <iframe name="lf-frame" id="lf-frame" title="form" style="display:none"></iframe>
       </div>
     </div>
   </section>
@@ -203,6 +205,7 @@
 <script src="https://www.google.com/recaptcha/api.js?hl=en" async defer></script>
 <script>function leadCheck(f){var e=document.getElementById('lf-err');function bad(m){e.textContent=m;e.style.display='block';return false}
 if(f.email.value.trim().toLowerCase()!==f.email2.value.trim().toLowerCase())return bad('The two email addresses do not match.');
-if(window.grecaptcha&&!grecaptcha.getResponse())return bad('Please check the box "I am not a robot".');e.style.display='none';return true}</script>
+if(window.grecaptcha&&!grecaptcha.getResponse())return bad('Please check the box "I am not a robot".');e.style.display='none';window.lfSent=1;var b=f.querySelector('button');b.disabled=true;b.textContent='Sending...';return true}
+document.addEventListener('DOMContentLoaded',function(){var fr=document.getElementById('lf-frame');if(fr)fr.addEventListener('load',function(){if(!window.lfSent)return;document.getElementById('cont').hidden=true;var t=document.getElementById('lf-thanks');t.hidden=false;t.scrollIntoView({block:'center'});if(window.gtag)gtag('event','generate_lead');});});</script>
 </body>
 </html>
