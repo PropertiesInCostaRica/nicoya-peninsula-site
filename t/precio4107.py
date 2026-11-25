@@ -18,12 +18,12 @@ else:
     print('OJO: no encontre el precio en la pagina de la propiedad')
 def fixcard(m):
     c = m.group(0)
-    if 'orotina/for_sale/investment-opportunity.html' not in c: return c
-    return re.sub(r'<li>\s*Sales Price:.*?</li>', '<li>Sales Price: ' + NEW + ' </li>', c, count=1, flags=re.S)
+    if 'investment-opportunity.html' not in c: return c
+    return re.sub(r'<li>(\s*<strong>)?\s*Sales Price:.*?</li>', lambda m: '<li>' + ('<strong>' if m.group(1) else '') + 'Sales Price: ' + NEW + ('</strong>' if m.group(1) else '') + '</li>', c, count=1, flags=re.S)
 n = 0
 for f in sorted(glob.glob(W + '*.htm*') + glob.glob(W + 'region_and_price/*.htm*')):
     s = rd(f)
-    if 'orotina/for_sale/investment-opportunity.html' not in s or '<article' not in s: continue
+    if 'investment-opportunity.html' not in s or '<article' not in s: continue
     t = re.sub(r'<article class="listing".*?</article>', fixcard, s, flags=re.S)
     if t != s:
         shutil.copy2(f, B + os.path.basename(f) + '.' + st); wr(f, t); n += 1
