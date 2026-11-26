@@ -12,7 +12,12 @@ CSS = ('<style id="car-css">.sp-hero picture img{filter:brightness(.95) saturate
 def rd(p): return open(p, encoding='utf-8', errors='surrogateescape').read()
 def region(s, n):
     a = s.find('<!-- InstanceBeginEditable name="%s" -->' % n)
-    if a < 0: return None
+    if a < 0:
+        a = s.find('<!-- #BeginEditable "%s" -->' % n)
+        if a < 0: return None
+        a = s.index('-->', a) + 3
+        e = s.find('<!-- #EndEditable -->', a)
+        return s[a:e] if e > 0 else None
     a = s.index('-->', a) + 3
     e = s.find('<!-- InstanceEndEditable -->', a)
     return s[a:e] if e > 0 else None
@@ -80,6 +85,7 @@ for pat in (r'<section class="featured_listing_of', r'<!--#+INI#+-->', r'<articl
     if m: first = min(first, m.start())
 last = c.rfind('</article>')
 before = balance(c[:first])
+if '#BeginEditable' in s: before = ''  # old page: drop the old menu table
 after = re.sub(r'<!--[^>]*-->', '', c[last + 10:] if last >= 0 else '')
 after = balance(after) if re.sub(r'<[^>]+>|\s|&nbsp;', '', after) else ''
 w = lambda x: '<!--###################INI#####################-->\n' + x + '\n<!--###################FIN#####################-->'
