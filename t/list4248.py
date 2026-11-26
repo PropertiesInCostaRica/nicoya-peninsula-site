@@ -56,7 +56,15 @@ def get(key):
     p = TMP + key + '.jpg'
     if not os.path.exists(p) or os.path.getsize(p) < 10000:
         u = PH[key] if PH[key].startswith('http') else 'https://drive.usercontent.google.com/download?id=%s&export=download&confirm=t' % PH[key]
-        if subprocess.call(['wget', '-q', '-O', p, u]) != 0 or os.path.getsize(p) < 10000:
+        ok = False
+        for uu in (u, u.split('/-/')[0] + '/'):
+            for cmd in (['wget', '-q', '-U', 'Mozilla/5.0', '-O', p, uu], ['curl', '-sL', '-A', 'Mozilla/5.0', '-o', p, uu]):
+                try:
+                    if subprocess.call(cmd) == 0 and os.path.getsize(p) > 10000: ok = True; break
+                except Exception: pass
+            if ok: break
+        if not ok:
+            os.system('wget -S -U Mozilla/5.0 -O /dev/null "%s" 2>&1 | head -5' % u)
             print('AVISO: no pude bajar la foto ' + key + ', la salto'); return None
     return p
 def conv(key, k):
