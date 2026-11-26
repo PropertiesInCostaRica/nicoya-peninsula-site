@@ -14,6 +14,8 @@ EV = ['properties/guanacaste/for_sale/modern-tropical-pool-home.html',
       'properties/guanacaste/for_sale/hacienda-estate-playa-grande.html']
 ALWAYS = ['luxury_estates_in_costa_rica.html', 'homes/sea_side_homes.html']
 # Area pages where PCR has no own listings: Cynthia's can stay first and Featured there
+# Mirtha: only on Beach it matters that PCR and Klaudia listings go first
+ONLY = ['beach.html']
 SKIP = ['tamarindo-real-estate.html', 'conchal.html', 'pinilla_real_estate.html', 'flamingo_real_estate.html']
 BLK = re.compile(r'<!--#+INI#+-->\s*<article class="listing".*?</article>\s*<!--#+FIN#+-->', re.S)
 B = '/root/respaldos/evorder-' + time.strftime('%Y%m%d%H%M') + '/'
@@ -35,7 +37,7 @@ changed = 0
 for p in sorted(pages):
     s = rd(p)
     rel = p[len(W):]
-    if rel in SKIP: continue
+    if rel in SKIP or rel not in ONLY: continue
     if rel not in ALWAYS and not any(('href="/' + r + '"') in s for r in EV): continue
     fi = s.find('featured_listing_of')
     fs = s.rfind('<section', 0, fi) if fi >= 0 else -1
