@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Cynthia's shared listings go AFTER PCR and Klaudia exclusives on every category page
-# (never in Featured), right before Sold/Rented cards. Also makes sure they are on Luxury and Sea Side Homes.
+# (never in Featured), right before Sold/Rented cards. Except Tamarindo, Conchal, Pinilla and Flamingo. Also makes sure they are on Luxury and Sea Side Homes.
 import re, os, glob, shutil, time
 W = '/var/www/propertiesincostarica.com/web/'
 EV = ['properties/guanacaste/for_sale/modern-tropical-pool-home.html',
@@ -13,6 +13,8 @@ EV = ['properties/guanacaste/for_sale/modern-tropical-pool-home.html',
       'properties/guanacaste/for_sale/golf-villa-conchal.html',
       'properties/guanacaste/for_sale/hacienda-estate-playa-grande.html']
 ALWAYS = ['luxury_estates_in_costa_rica.html', 'homes/sea_side_homes.html']
+# Area pages where PCR has no own listings: Cynthia's can stay first and Featured there
+SKIP = ['tamarindo-real-estate.html', 'conchal.html', 'pinilla_real_estate.html', 'flamingo_real_estate.html']
 BLK = re.compile(r'<!--#+INI#+-->\s*<article class="listing".*?</article>\s*<!--#+FIN#+-->', re.S)
 B = '/root/respaldos/evorder-' + time.strftime('%Y%m%d%H%M') + '/'
 os.makedirs(B, exist_ok=True)
@@ -33,6 +35,7 @@ changed = 0
 for p in sorted(pages):
     s = rd(p)
     rel = p[len(W):]
+    if rel in SKIP: continue
     if rel not in ALWAYS and not any(('href="/' + r + '"') in s for r in EV): continue
     fi = s.find('featured_listing_of')
     fs = s.rfind('<section', 0, fi) if fi >= 0 else -1
