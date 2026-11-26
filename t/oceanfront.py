@@ -82,7 +82,8 @@ def cid(x):
     m = re.search(r'ID CODE: #(\d+)', x); return int(m.group(1)) if m else 0
 TOP = [3751, 4246]   # Mirtha: these go right after Featured
 act = [x for x in others if not gone(x)]
-act = sorted(act, key=lambda x: (TOP.index(cid(x)) if cid(x) in TOP else len(TOP), 1 if 0 < cid(x) < 2000 else 0))
+rent = lambda x: 1 if re.search(r'for_rent|for-rent|Vista Mare|rental', x, re.I) else 0   # rentals go after the sale listings
+act = sorted(act, key=lambda x: (TOP.index(cid(x)) if cid(x) in TOP else len(TOP), rent(x), 1 if 0 < cid(x) < 2000 else 0))
 keep = feat[:2] + act + sold
 first = len(c)
 for pat in (r'<section class="featured_listing_of', r'<!--#+INI#+-->', r'<article class="listing"'):
