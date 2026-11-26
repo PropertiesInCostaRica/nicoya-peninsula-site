@@ -110,9 +110,9 @@ for f in ('conchal.html', 'beach.html', 'gated_communities.html', 'homes.html', 
     t = open(p, encoding='utf-8', errors='surrogateescape').read()
     if REL in t: print('ya estaba en ' + f); continue
     i = t.find('featured_listing_of')
-    j = t.find('</section>', i) if i >= 0 else -1
+    if i >= 0: j = t.find('</section>', i) + len('</section>')
+    else: j = t.find('<!--###################INI')
     if j < 0: print('OJO: no encontre la lista en ' + f); continue
-    j += len('</section>')
     shutil.copy2(p, B + f.replace('/', '_'))
     open(p, 'w', encoding='utf-8', errors='surrogateescape').write(t[:j] + '\n' + CARD + t[j:])
     print('Tarjeta agregada en ' + f)
