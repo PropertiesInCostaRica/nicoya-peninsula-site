@@ -34,11 +34,11 @@ from PIL import Image
 IMG = W + 'properties/Images/whale-bay-villa-2/opt/'
 CDN = 'https://cdn.propertiesincostarica.com/properties/Images/whale-bay-villa-2/opt/'
 AB = 'https://a0.muscache.com/im/pictures/hosting/Hosting-987599427898041723/original/'
-KIT = {'k1': AB + '03df42dd-39cd-41de-981b-662d63aa2578.jpeg', 'k2': AB + 'af736bd0-fe88-41a7-9383-04ccf1ba1458.jpeg', 'k3': AB + '9be213f2-f06e-423a-8cbb-13a26f4f9aef.jpeg'}
+KIT = {'k1': 'https://lh3.googleusercontent.com/d/1E-xYeMV6dOdksGMF0peAyEyvqukC0Qdo=w1600', 'k2': 'https://lh3.googleusercontent.com/d/1GR1sovPyme3jZbMEYml6zKY_QiTyes7s=w1600'}
 ok = []
 for k, u in sorted(KIT.items()):
     tmp = '/root/kit_' + k + '.jpg'
-    subprocess.call(['wget', '-q', '-U', 'Mozilla/5.0', '-O', tmp, u + '?im_w=1600'])
+    subprocess.call(['wget', '-q', '-U', 'Mozilla/5.0', '-O', tmp, u])
     if not os.path.exists(tmp) or os.path.getsize(tmp) < 10000:
         print('AVISO: no pude bajar la foto de cocina ' + k); continue
     im = Image.open(tmp).convert('RGB')
