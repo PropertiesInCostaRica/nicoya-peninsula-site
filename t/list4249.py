@@ -53,10 +53,12 @@ def get(key):
     if not os.path.exists(p) or os.path.getsize(p) < 10000:
         u = 'https://drive.usercontent.google.com/download?id=%s&export=download&confirm=t' % PH[key]
         if subprocess.call(['wget', '-q', '-O', p, u]) != 0 or os.path.getsize(p) < 10000:
-            raise SystemExit('ERROR: no pude bajar la foto ' + key)
+            print('AVISO: no pude bajar la foto ' + key + ', la salto'); return None
     return p
 def conv(key, k):
-    im = Image.open(get(key))
+    p = get(key)
+    if not p: return False
+    im = Image.open(p)
     try: im.draft('RGB', (2000, 2000))
     except Exception: pass
     if ImageOps and hasattr(ImageOps, 'exif_transpose'):
@@ -70,6 +72,7 @@ def conv(key, k):
     t = im.resize((int(im.width * r + .5), int(im.height * r + .5)), Image.LANCZOS)
     x = (t.width - tw) // 2; y = (t.height - th) // 2
     t.crop((x, y, x + tw, y + th)).save(IMGD + 'thumbs/%d.jpg' % k, quality=82, optimize=True)
+    return True
 k = 0; html = []; first = True
 for kind, val in BLOCKS:
     if kind == 'p': html.append('<p>%s</p>' % val)
@@ -79,7 +82,8 @@ for kind, val in BLOCKS:
         for row in val:
             a = ''
             for key in row:
-                k += 1; conv(key, k)
+                if not conv(key, k + 1): continue
+                k += 1
                 a += '<a href="%s%d.jpg"><img src="%sthumbs/%d.jpg" alt="%s" width="250" height="187"></a>' % (CDN, k, CDN, k, ALT)
             if first:
                 a += '\n<span class="to_enlarge">Click on the pictures to enlarge</span>'; first = False
