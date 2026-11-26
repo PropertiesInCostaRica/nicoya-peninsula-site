@@ -27,7 +27,7 @@ def put(s, n, val):
     e = s.index('<!-- InstanceEndEditable -->', a)
     return s[:a] + val + s[e:]
 def page_of(card):
-    m = re.search(r'href="(?:https?://www\.propertiesincostarica\.com)?/?(properties/[^"?#]+\.html?)', card)
+    m = re.search(r'href="(?:https?://www\.propertiesincostarica\.com)?(?:\.\./|/)?(properties/[^"?#]+\.html?)', card)
     if not m: return None
     f = W + m.group(1)
     return rd(f) if os.path.exists(f) else None
