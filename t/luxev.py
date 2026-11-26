@@ -7,7 +7,8 @@ EV = ['properties/guanacaste/for_sale/modern-tropical-pool-home.html',
       'properties/guanacaste/for_sale/tamarindo-pool-home.html',
       'properties/guanacaste/for_sale/modern-home-casita-tamarindo.html',
       'properties/guanacaste/for_sale/ocean-view-estate-flamingo.html',
-      'properties/guanacaste/for_sale/courtyard-home-playa-grande.html']
+      'properties/guanacaste/for_sale/courtyard-home-playa-grande.html',
+      'properties/guanacaste/for_sale/golf-view-residence-conchal.html']
 INI = '<!--###################INI#####################-->'
 FIN = '<!--###################FIN#####################-->'
 def card(rel):
