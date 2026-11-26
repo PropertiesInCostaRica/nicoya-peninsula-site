@@ -55,6 +55,12 @@ others = [x for x in cards if x not in feat]
 if not feat:
     feat = [x for x in others if not gone(x)][:2]
     others = [x for x in others if x not in feat]
+# bring in the beachfront listings that are missing here
+ids = set(re.findall(r'ID CODE: #(\d+)', c))
+for m in re.finditer(r'<article class="listing".*?</article>', rd(W + 'beach_front_properties_only.htm'), re.S):
+    x = m.group(0); i = re.search(r'ID CODE: #(\d+)', x)
+    if 'href=' in x and i and i.group(1) not in ids:
+        ids.add(i.group(1)); others.append(x); print('Agregada de Beachfront: #' + i.group(1))
 for rel in ADD:
     if os.path.exists(W + rel) and not any(('/' + rel + '"') in x for x in cards):
         h = rd(W + 'homes.html')
@@ -99,7 +105,7 @@ if mk: meta += '<meta name="keywords" content="' + mk.group(1) + '">\n'
 out = out.replace('</TITLE>', '</TITLE>\n' + meta, 1)
 out = re.sub(r'(<h1 id="sp-h1">.*?</h1>.*?)<p>.*?</p>', lambda m: m.group(1) + '<p>' + INTRO + '</p>', out, count=1, flags=re.S)
 out = re.sub(r'(find the right) beach home', r'\1 property', out, flags=re.I)
-pic = '<picture><img src="' + hero_of(keep[:2]) + '" alt="Ocean front home in Costa Rica" width="1200" height="900" fetchpriority="high" decoding="async" style="object-fit:cover;object-position:center 60%"></picture>'
+pic = '<picture><img src="' + 'https://cdn.propertiesincostarica.com/properties/Images/premier-villa/opt/1.jpg' + '" alt="Ocean front beach in Guanacaste, Costa Rica" width="1200" height="900" fetchpriority="high" decoding="async" style="object-fit:cover;object-position:center 50%"></picture>'
 out = re.sub(r'(<section class="sp-hero"[^>]*>\s*)<picture>.*?</picture>', lambda m: m.group(1) + pic, out, count=1, flags=re.S)
 out = out.replace('</head>', CSS + '</head>', 1)
 np = W + REL.replace('.html', '-nuevo.html')
