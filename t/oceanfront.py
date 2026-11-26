@@ -78,7 +78,12 @@ def mark(x):
     y, n = re.subn(r'<li>(?:(?!</li>).)*?Price(?:(?!</li>).)*?</li>', tag, x, count=1, flags=re.S)
     return y if n else re.sub(r'(<ul>)', lambda m: m.group(1) + tag, x, count=1)
 sold = [mark(x) for x in sold]
-keep = feat[:2] + [x for x in others if not gone(x)] + sold
+def cid(x):
+    m = re.search(r'ID CODE: #(\d+)', x); return int(m.group(1)) if m else 0
+TOP = [3751, 4246]   # Mirtha: these go right after Featured
+act = [x for x in others if not gone(x)]
+act = sorted(act, key=lambda x: (TOP.index(cid(x)) if cid(x) in TOP else len(TOP), 1 if 0 < cid(x) < 2000 else 0))
+keep = feat[:2] + act + sold
 first = len(c)
 for pat in (r'<section class="featured_listing_of', r'<!--#+INI#+-->', r'<article class="listing"'):
     m = re.search(pat, c)
