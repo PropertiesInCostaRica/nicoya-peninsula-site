@@ -26,7 +26,7 @@ def fixcard(m):
 REL = 'homes/ocean_front_homes.html'
 new = W + 'homes/ocean_front_homes-nuevo.html'
 if not os.path.exists(new): raise SystemExit('No existe la vista previa ' + new)
-shutil.copy2(W + REL, B + REL + '.' + st)
+shutil.copy2(W + REL, B + REL.replace('/', '_') + '.' + st)
 s = rd(new)
 s = re.sub(r'<meta name="robots" content="noindex, nofollow">\s*', '', s)
 wr(W + REL, s)
