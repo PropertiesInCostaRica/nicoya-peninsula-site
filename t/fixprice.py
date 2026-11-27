@@ -7,7 +7,7 @@ slug = P.split('/')[-1]
 B = '/root/respaldos/fixprice-' + time.strftime('%Y%m%d%H%M') + '/'
 LI = '<li><strong>Sales Price: ' + PR + '</strong></li>'
 def fix(a):
-    if '/' + P not in a and '/' + slug not in a: return a
+    if P not in a: return a
     a2, n = re.subn(r'<li>(?:(?!</li>).)*?Price(?:(?!</li>).)*?</li>', LI, a, count=1, flags=re.S | re.I)
     return a2
 n = 0
@@ -18,8 +18,8 @@ for root, dirs, files in os.walk(W):
         f = os.path.join(root, fn)
         try: t = open(f, encoding='utf-8', errors='surrogateescape').read()
         except Exception: continue
-        if slug not in t or '<article class="listing"' not in t: continue
-        nt = re.sub(r'<article class="listing"(?:(?!</article>).)*?' + re.escape(slug) + r'.*?</article>', lambda m: fix(m.group(0)), t, flags=re.S)
+        if P not in t or '<article class="listing"' not in t: continue
+        nt = re.sub(r'<article class="listing"(?:(?!</article>).)*?' + re.escape(P) + r'.*?</article>', lambda m: fix(m.group(0)), t, flags=re.S)
         if nt != t:
             os.makedirs(B, exist_ok=True); rel = f[len(W):]
             shutil.copy2(f, B + rel.replace('/', '_'))
