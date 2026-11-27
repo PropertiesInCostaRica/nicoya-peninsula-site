@@ -19,7 +19,7 @@ def gone(t):
     x = ' '.join(r.get(k, '') for k in ('title', 'code', 'price', 'features'))
     return bool(re.search(r'\bSOLD\b|Sold!|\bRENTED\b|Rented!|\bVendid|\bAlquilad', x, re.I))
 args = sys.argv[1:]
-if args and args[0] in ('--count', '--test', '--all'):
+if args and args[0] in ('--count', '--test', '--all', '--next'):
     allp = sorted(glob.glob(W + 'properties/**/*.htm*', recursive=True))
     act, sold, other, done = [], [], [], []
     for p in allp:
@@ -31,6 +31,15 @@ if args and args[0] in ('--count', '--test', '--all'):
     if args[0] == '--count':
         for p in other[:15]: print('  otra plantilla: ' + p[len(W):])
         raise SystemExit
+    def pid(p):
+        m = re.search(r'ID CODE: #(\d+)', rd(p)) or re.search(r'name="CODE"[^>]*value="(\d+)"', rd(p))
+        return int(m.group(1)) if m else 0
+    if args[0] == '--next':
+        # next 10 active listings with ID 3500 or higher, newest first
+        n = int(args[1]) if len(args) > 1 else 10
+        cand = sorted([(pid(p), p) for p in act if pid(p) >= 3500], reverse=True)
+        print('Quedan %d activas con ID 3500 o mayor' % len(cand))
+        act = [p for _, p in cand[:n]]
     if args[0] == '--test':
         n = int(args[1]) if len(args) > 1 else 10
         act.sort(key=os.path.getmtime)
