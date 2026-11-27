@@ -21,6 +21,17 @@ mb = lambda l: sum(s for _, s in l) / 1048576.0
 print('1) Comprimir %d logs diarios de mas de 2 dias: %.0f MB (quedarian en unos %.0f MB)' % (len(comp), mb(comp), mb(comp) * 0.1))
 print('2) Borrar %d logs viejos de mas de 60 dias: %.0f MB' % (len(old), mb(old)))
 for f, s in sorted(old, key=lambda x: -x[1])[:5]: print('   ejemplo: %s (%.1f MB)' % (f, s / 1048576.0))
+M = '/var/mail/root'
+VM = '--vaciar-correo' in sys.argv
+if os.path.exists(M):
+    print('3) Correo automatico de root: %.0f MB. Asuntos mas repetidos:' % (os.path.getsize(M) / 1048576.0))
+    print(sh("grep '^Subject:' " + M + " | sort | uniq -c | sort -rn | head -5"))
+    if VM:
+        sh('tail -c 2000000 ' + M + ' > /root/respaldos/correo-root-ultimos.txt')
+        open(M, 'w').close()
+        print('   Correo de root vaciado (lo ultimo quedo en /root/respaldos/correo-root-ultimos.txt)')
+    else:
+        print('   (para vaciarlo: python3 /root/logclean.py --aplicar --vaciar-correo)')
 if AP:
     for f, s in comp:
         try:
