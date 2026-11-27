@@ -95,6 +95,7 @@ for f in cats:
         m = re.search(r'href="(?:https?://www\.propertiesincostarica\.com)?(?:\.\./)*/?(properties/[^"?#]+\.html?)', a)
         if m and m.group(1) not in pool and 'idcodes' in a: pool[m.group(1)] = a
 found = []
+nocard = []
 for f in glob.glob(W + 'properties/**/*.htm*', recursive=True):
     rel = f[len(W):]
     if rel in have or 'nuevo' in rel or rel.endswith('-wa.html'): continue
@@ -105,10 +106,11 @@ for f in glob.glob(W + 'properties/**/*.htm*', recursive=True):
     if re.search(r'\bSOLD\b|\bRENTED\b|Off the Market|Under Contract|\bVendid|\bAlquilad', vis, re.I): continue
     if price_of(tt) < 1000000: continue
     if rel in pool:
-        found.append(pool[rel]); have.add(rel); print('Agregada: #%s %s' % ((re.search(r'#(\d+)', pool[rel]) or [0, '?'])[1], rel))
+        found.append(pool[rel]); have.add(rel); mm = re.search(r'#(\d+)', pool[rel]); print('Agregada: #%s %s' % (mm.group(1) if mm else '?', rel))
     else:
-        print('Sin tarjeta para copiar (no agregada): ' + rel)
+        nocard.append(rel)
 others = found + others
+print('Paginas viejas sin tarjeta en ninguna seccion (no se agregaron): %d' % len(nocard))
 
 sold = [x for x in others if gone(x)]
 tag = '<li><div class="sold">Sold! Looking for similar properties? <a href="/contact.html">Contact Us</a></div></li>'
