@@ -18,7 +18,7 @@ def gone(t):
     r = {m.group(2): m.group(3) for m in RX.finditer(t)}
     x = ' '.join(r.get(k, '') for k in ('title', 'code', 'price', 'features'))
     x = re.sub(r'<[^>]+>', ' ', x)   # look only at the visible text, not at class="sold" buttons
-    return bool(re.search(r'\bSOLD\b|\bRENTED\b|Off the Market|\bVendid|\bAlquilad', x, re.I))
+    return bool(re.search(r'\bSOLD\b|\bRENTED\b|Off the Market|Under Contract|\bVendid|\bAlquilad', x, re.I))
 args = sys.argv[1:]
 if args and args[0] == '--from':
     # every active property listed on a category page, e.g. --from eco-friendly.html
