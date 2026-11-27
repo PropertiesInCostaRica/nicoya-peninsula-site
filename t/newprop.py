@@ -29,7 +29,15 @@ if args and args[0] == '--from':
         m = re.search(r'href="(?:https?://www\.propertiesincostarica\.com)?(?:\.\./|/)?(properties/[^"?#]+\.html?)"', c)
         if m: hs.append(m.group(1))
     hs = list(dict.fromkeys(hs))
-    todo = [h for h in hs if os.path.exists(W + h) and 'hd--v2' not in rd(W + h)]
+    todo, skip_old, skip_gone = [], [], []
+    for h in hs:
+        if not os.path.exists(W + h): continue
+        t = rd(W + h)
+        if 'hd--v2' in t: continue
+        if 'template_properties' not in t or 'InstanceBeginEditable name="content"' not in t: skip_old.append(h); continue
+        if gone(t): skip_gone.append(h); continue
+        todo.append(h)
+    print('Plantilla vieja (para hacer aparte): %d | Fuera del mercado (no se tocan): %d' % (len(skip_old), len(skip_gone)))
     lim = int(args[2]) if len(args) > 2 else len(todo)
     print('%d propiedades activas en esa seccion, %d ya en diseno nuevo, %d por hacer. Ahora: %d' % (len(hs), len(hs) - len(todo), len(todo), min(lim, len(todo))))
     args = todo[:lim]
