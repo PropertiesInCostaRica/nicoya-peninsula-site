@@ -28,7 +28,11 @@ if args and args[0] == '--from':
         if re.search(r'Sold!|>\s*SOLD\b|RENTED|Rented!', c, re.I): continue
         m = re.search(r'href="(?:https?://www\.propertiesincostarica\.com)?(?:\.\./|/)?(properties/[^"?#]+\.html?)"', c)
         if m: hs.append(m.group(1))
-    args = list(dict.fromkeys(hs)); print('%d propiedades en esa seccion' % len(args))
+    hs = list(dict.fromkeys(hs))
+    todo = [h for h in hs if os.path.exists(W + h) and 'hd--v2' not in rd(W + h)]
+    lim = int(args[2]) if len(args) > 2 else len(todo)
+    print('%d propiedades activas en esa seccion, %d ya en diseno nuevo, %d por hacer. Ahora: %d' % (len(hs), len(hs) - len(todo), len(todo), min(lim, len(todo))))
+    args = todo[:lim]
 if args and args[0] in ('--count', '--test', '--all', '--next'):
     allp = sorted(glob.glob(W + 'properties/**/*.htm*', recursive=True))
     act, sold, other, done = [], [], [], []
