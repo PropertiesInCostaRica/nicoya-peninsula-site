@@ -88,20 +88,23 @@ HL = {
  'Parking for 20 cars'],
 }
 
+TITLES = {'properties/hacienda_pinilla/for_sale/charming-colonial-home.html': 'Colonial Charm at a Glance', 'properties/caribe/for-sale/colorful-vibes.html': 'Why This Business Works', 'properties/caribe/for-sale/tranquil-terrain.html': 'Key Features', 'properties/caribe/for-sale/paradise-compound.html': 'Live, Vacation and Earn', 'properties/caribe/for-sale/extraordinary-compound.html': 'The Compound at a Glance', 'properties/caribe/for-sale/dream-tropical-jungle.html': 'What Makes It Special', 'properties/tamarindo/for_sale/opportunity.html': 'Development Potential', 'properties/dominical/for_sale/ocean-view-eco-development-land.html': 'Why Develop Here', 'properties/dominical/for_sale/ocean_view_home_and_extra_land.html': 'What Makes This Home Special', 'properties/caribe/for-sale/caribbean-gem.html': 'The Compound at a Glance', 'properties/tambor/for_rent/oceanfront-estate.html': 'Why Book This Estate', 'properties/bahia-ballena/for-sale/oceanview-development-lands.html': 'Property Features', 'properties/herradura/for_sale/house_with_pool_and_equine_quarters.html': 'Property Features'}
+OLD = {'properties/caribe/for-sale/rental-haven.html': 'Why Investors Love This Compound', 'properties/playa-negra/for-sale/garden-apts.html': 'What Makes This Duplex Special', 'properties/bahia-ballena/for-sale/secluded-paradise.html': 'The Land at a Glance', 'properties/osa/for_sale/amazing-views-lot-in-the-pacific.html': 'Development Potential', 'properties/samara/for-sale/beautiful-sunsets-view-home.html': 'Life Steps from Playa Samara', 'properties/nicoya_peninsula/for_sale/serene-views.html': 'Why Guests Love Casa Vista Mare', 'properties/puntarenas/for_sale/peaceful-quintas.html': 'Key Features', 'properties/nicoya_peninsula/for_sale/mountains-beyond.html': 'What Makes Casa Luna Unique', 'properties/hacienda_pinilla/for_sale/premier-villa.html': 'Villa Maya at a Glance', 'properties/caribe/for-sale/bright-light.html': 'Home Features', 'properties/nicoya_peninsula/for_sale/cozy-home.html': 'Top of the World Living', 'properties/tamarindo/for_sale/develop.html': 'Why This Land', 'properties/caribe/for-sale/dream-land.html': 'Investment Potential', 'properties/central_pacific/for_sale/breathtaking-ocean-views-house.html': 'The Estate at a Glance', 'properties/tambor/for_rent/ultimate-estate.html': 'Why Book This Estate', 'properties/tortuguero/for_sale/priceless.html': 'Lodge Features', 'properties/guanacaste/for_sale/new-magnificently-design.html': 'What You Will Love', 'properties/dominical/for_sale/ultimate_parcel_of_land.html': 'Property Features', 'properties/guanacaste/for_sale/parcel-ready-to-build.html': 'Why Build Here', 'properties/samara/for-sale/ocean-view-oasis.html': 'What Makes This Home Special', 'properties/paquera/for-sale/revenue-home.html': 'Income Highlights', 'properties/tambor/for_sale/corner-house.html': 'Golf Living at Its Best', 'properties/paquera/for-sale/free-standing-bungalow.html': 'Why Buyers Love Casa Mango', 'properties/paquera/for-sale/vacation-getaway.html': 'Home Features', 'properties/tambor/for_sale/renovated-hotel.html': 'The Hotel at a Glance'}
+
 RX = re.compile(r'(<!-- InstanceBeginEditable name="content" -->)(.*?)(<!-- InstanceEndEditable -->)', re.S)
 
-def block(items):
-    return ('\n<div class="highlights"><h2>Highlights</h2>\n<ul>\n' +
+def block(items, title='Highlights'):
+    return ('\n<div class="highlights"><h2>' + title + '</h2>\n<ul>\n' +
             '\n'.join('<li>%s</li>' % x for x in items) + '\n</ul></div>\n')
 
-def insert(c, items):
+def insert(c, items, title):
     # despues del primer parrafo con texto de verdad
     for m in re.finditer(r'</p>', c, re.I):
         txt = re.sub(r'<[^>]+>', ' ', c[:m.end()])
         txt = re.sub(r'Click on the pictures to enlarge', '', txt)
         if len(re.sub(r'\s+', ' ', txt).strip()) > 150:
-            return c[:m.end()] + block(items) + c[m.end():]
-    return c + block(items)
+            return c[:m.end()] + block(items, title) + c[m.end():]
+    return c + block(items, title)
 
 hechas = 0
 for p, items in HL.items():
@@ -112,9 +115,9 @@ for p, items in HL.items():
     m = RX.search(t)
     if not m:
         print('SIN REGION content:', p); continue
-    if re.search(r'highlights', m.group(2), re.I):
-        print('Ya tiene Highlights:', p); continue
-    nc = insert(m.group(2), items)
+    if 'class="highlights"' in m.group(2) or re.search(r'highlights', re.sub(r'<[^>]+>',' ',m.group(2)), re.I):
+        print('Ya tenia lista:', p); continue
+    nc = insert(m.group(2), items, TITLES.get(p, 'Highlights'))
     nt = t[:m.start(2)] + nc + t[m.end(2):]
     if TEST:
         print('Haria:', p); continue
@@ -122,7 +125,17 @@ for p, items in HL.items():
     shutil.copy2(f, B + p.replace('/', '_'))
     open(f, 'w', encoding='utf-8', errors='surrogateescape').write(nt)
     hechas += 1
-    print('Highlights: https://www.propertiesincostarica.com/' + p)
+    print('Lista nueva: https://www.propertiesincostarica.com/' + p)
 
+# titulos nuevos para las listas del primer grupo
+for p, title in OLD.items():
+    f = W + p
+    if not os.path.exists(f): continue
+    t = open(f, encoding='utf-8', errors='surrogateescape').read()
+    nt = t.replace('<div class="highlights"><h2>Highlights</h2>', '<div class="highlights"><h2>' + title + '</h2>')
+    if nt != t and not TEST:
+        os.makedirs(B, exist_ok=True); shutil.copy2(f, B + p.replace('/', '_') + '.t')
+        open(f, 'w', encoding='utf-8', errors='surrogateescape').write(nt)
+        print('Titulo nuevo:', title, '|', p)
 print('Listas agregadas:', hechas, '| respaldo en', B)
 print('LISTO')
