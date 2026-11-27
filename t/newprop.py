@@ -22,7 +22,11 @@ args = sys.argv[1:]
 if args and args[0] == '--from':
     # every active property listed on a category page, e.g. --from eco-friendly.html
     cat = rd(W + args[1].replace('https://www.propertiesincostarica.com/', '').lstrip('/'))
-    hs = re.findall(r'<article class="listing".*?href="(?:https?://www\.propertiesincostarica\.com)?(?:\.\./|/)?(properties/[^"?#]+\.html?)"', cat, re.S)
+    hs = []
+    for c in re.findall(r'<article class="listing".*?</article>', cat, re.S):
+        if re.search(r'Sold!|>\s*SOLD\b|RENTED|Rented!', c, re.I): continue
+        m = re.search(r'href="(?:https?://www\.propertiesincostarica\.com)?(?:\.\./|/)?(properties/[^"?#]+\.html?)"', c)
+        if m: hs.append(m.group(1))
     args = list(dict.fromkeys(hs)); print('%d propiedades en esa seccion' % len(args))
 if args and args[0] in ('--count', '--test', '--all', '--next'):
     allp = sorted(glob.glob(W + 'properties/**/*.htm*', recursive=True))
