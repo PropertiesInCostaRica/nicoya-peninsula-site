@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 # Puts a property page into the NEW DESIGN (header, menu, footer, lead form) keeping all its own content.
-# Usage: python3 newprop.py <page path from web root> [more pages...]
+# Usage: python3 newprop.py <page> [more pages...]
+#        python3 newprop.py --count          (only counts, changes nothing)
+#        python3 newprop.py --test 10        (converts 10 varied pages to review)
+#        python3 newprop.py --all            (converts every active listing)
+# Sold and rented listings are never touched.
 import re, sys, os, shutil, time
 W = '/var/www/propertiesincostarica.com/web/'
 SHELL = W + 'properties/puntarenas/for_sale/whale-bay-villa.html'
@@ -9,12 +13,37 @@ def rd(p): return open(p, encoding='utf-8', errors='surrogateescape').read()
 shell = rd(SHELL)
 B = '/root/respaldos/newprop-' + time.strftime('%Y%m%d%H%M') + '/'
 os.makedirs(B, exist_ok=True)
-for rel in sys.argv[1:]:
+import glob, random
+def gone(t):
+    r = {m.group(2): m.group(3) for m in RX.finditer(t)}
+    x = ' '.join(r.get(k, '') for k in ('title', 'code', 'price', 'features'))
+    return bool(re.search(r'\bSOLD\b|Sold!|\bRENTED\b|Rented!|\bVendid|\bAlquilad', x, re.I))
+args = sys.argv[1:]
+if args and args[0] in ('--count', '--test', '--all'):
+    allp = sorted(glob.glob(W + 'properties/**/*.htm*', recursive=True))
+    act, sold, other, done = [], [], [], []
+    for p in allp:
+        t = rd(p)
+        if 'hd--v2' in t: done.append(p); continue
+        if 'template_properties' not in t or 'InstanceBeginEditable name="content"' not in t: other.append(p); continue
+        (sold if gone(t) else act).append(p)
+    print('Paginas: %d | ya nuevas: %d | activas por cambiar: %d | vendidas/alquiladas (no se tocan): %d | otra plantilla: %d' % (len(allp), len(done), len(act), len(sold), len(other)))
+    if args[0] == '--count':
+        for p in other[:15]: print('  otra plantilla: ' + p[len(W):])
+        raise SystemExit
+    if args[0] == '--test':
+        n = int(args[1]) if len(args) > 1 else 10
+        act.sort(key=os.path.getmtime)
+        k = max(1, len(act) // n)
+        act = act[::k][:n]
+    args = [p[len(W):] for p in act]
+for rel in args:
     rel = rel.replace('https://www.propertiesincostarica.com/', '').lstrip('/')
     p = W + rel
     if not os.path.exists(p): print('ERROR: no existe ' + rel); continue
     old = rd(p)
     if 'hd--v2' in old: print('Ya tiene el diseno nuevo: ' + rel); continue
+    if gone(old): print('Vendida o alquilada, no se toca: ' + rel); continue
     regs = {m.group(2): m.group(3) for m in RX.finditer(old)}
     if 'content' not in regs or 'title' not in regs:
         print('OJO: esta pagina no usa la plantilla de propiedades, no la toque: ' + rel); continue
