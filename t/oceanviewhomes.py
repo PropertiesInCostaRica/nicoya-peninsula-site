@@ -84,8 +84,10 @@ TOP = []   # Mirtha: these go right after Featured
 act = [x for x in others if not gone(x)]
 rent = lambda x: 1 if re.search(r'for_rent|for-rent|Vista Mare', x, re.I) else 0   # rentals go after the sale listings
 act = sorted(act, key=lambda x: (TOP.index(cid(x)) if cid(x) in TOP else len(TOP), rent(x), 1 if 0 < cid(x) < 2000 else 0))
-NF = min(len(feat), 3)
-keep = feat[:NF] + act + sold
+down = [x for x in feat if 'whale-bay-villa' in x]   # Mirtha: Whale Bay leaves Featured, first in the list
+feat = [x for x in feat if x not in down]
+NF = min(len(feat), 2)
+keep = feat[:NF] + down + feat[NF:] + act + sold
 first = len(c)
 for pat in (r'<section class="featured_listing_of', r'<!--#+INI#+-->', r'<article class="listing"'):
     m = re.search(pat, c)
