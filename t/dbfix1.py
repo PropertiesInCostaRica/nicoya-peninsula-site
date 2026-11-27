@@ -23,12 +23,15 @@ if st:
 
 W, COR, LEON, MZ = lid(4241), lid(4219), lid(4228), lid(4128)
 cor = [r[0] for r in q("SELECT section_id FROM listing_section_listing WHERE listing_id=%%s", [COR])]
+for x in (46, 142, 88):
+    if x not in cor: cor.append(x)
+
 print("@@Casa Coral (#4219, misma zona) esta en: " + ", ".join("%%s %%s" %% (s, names.get(s, "?")) for s in cor))
 print("@@Casa Leon (#4228) esta en: " + ", ".join("%%s %%s" %% (r[0], names.get(r[0], "?")) for r in q("SELECT section_id FROM listing_section_listing WHERE listing_id=%%s", [LEON])))
 print("@@#4128 esta en: " + ", ".join("%%s %%s" %% (r[0], names.get(r[0], "?")) for r in q("SELECT section_id FROM listing_section_listing WHERE listing_id=%%s", [MZ])))
 w = q("SELECT region_id, status_id FROM listing_listing WHERE id=%%s", [W])[0]
 cr = q("SELECT region_id FROM listing_listing WHERE id=%%s", [COR])[0][0]
-print("@@PLAN 1: Whale Bay (#4241) entra en las mismas secciones que Casa Coral; region %%s -> %%s" %% (w[0], cr))
+print("@@PLAN 1: Whale Bay (#4241) entra en: " + ", ".join("%%s %%s" %% (x, names.get(x, "?")) for x in cor) + "; region %%s -> %%s" %% (w[0], cr))
 print("@@PLAN 2: #4128 Cradled by Nature: Online y precio 225000 (ahora: " + str(q("SELECT status_id, sales_price FROM listing_listing WHERE id=%%s", [MZ])[0]) + ")")
 if AP:
     bk = open("%s", "w")
