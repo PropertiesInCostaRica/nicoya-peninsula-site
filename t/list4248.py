@@ -70,7 +70,13 @@ def get(key):
 def conv(key, k):
     p = get(key)
     if not p: return False
-    im = Image.open(p)
+    try:
+        im = Image.open(p); im.load()
+    except Exception:
+        print('AVISO: la foto ' + key + ' no es una imagen valida, la salto')
+        try: os.remove(p)
+        except Exception: pass
+        return False
     try: im.draft('RGB', (2000, 2000))
     except Exception: pass
     if ImageOps and hasattr(ImageOps, 'exif_transpose'):
