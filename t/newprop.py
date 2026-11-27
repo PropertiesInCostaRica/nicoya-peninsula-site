@@ -19,6 +19,11 @@ def gone(t):
     x = ' '.join(r.get(k, '') for k in ('title', 'code', 'price', 'features'))
     return bool(re.search(r'\bSOLD\b|Sold!|\bRENTED\b|Rented!|\bVendid|\bAlquilad', x, re.I))
 args = sys.argv[1:]
+if args and args[0] == '--from':
+    # every active property listed on a category page, e.g. --from eco-friendly.html
+    cat = rd(W + args[1].replace('https://www.propertiesincostarica.com/', '').lstrip('/'))
+    hs = re.findall(r'<article class="listing".*?href="(?:https?://www\.propertiesincostarica\.com)?(?:\.\./|/)?(properties/[^"?#]+\.html?)"', cat, re.S)
+    args = list(dict.fromkeys(hs)); print('%d propiedades en esa seccion' % len(args))
 if args and args[0] in ('--count', '--test', '--all', '--next'):
     allp = sorted(glob.glob(W + 'properties/**/*.htm*', recursive=True))
     act, sold, other, done = [], [], [], []
