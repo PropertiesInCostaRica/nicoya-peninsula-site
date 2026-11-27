@@ -10,6 +10,7 @@ css.textContent='.pcr-req-wrap{display:flex;flex-direction:column;gap:12px;margi
 +'.pcr-req.b1,.pcr-req.b1:link,.pcr-req.b1:visited,.pcr-req.b1:focus{background:#048dc7!important}.pcr-req.b1:hover,.pcr-req.b1:active{background:#0b6f9c!important}'
 +'.pcr-req.b2,.pcr-req.b2:link,.pcr-req.b2:visited,.pcr-req.b2:focus{background:#25D366!important}.pcr-req.b2:hover,.pcr-req.b2:active{background:#1ba851!important}'
 +'.pcr-req svg{width:20px;height:20px;fill:#fff;flex:none}'
++'@media(min-width:768px){.contactus_link{display:none!important}}'
 ;
 document.head.appendChild(css);
 var h=document.querySelector('h1'),t=h?h.textContent.trim():document.title;
