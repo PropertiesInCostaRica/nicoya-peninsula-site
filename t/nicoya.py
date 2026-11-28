@@ -35,6 +35,7 @@ def page_of(card):
     return rd(f) if os.path.exists(f) else None
 def gone(card):
     if re.search(r'>\s*(SOLD|RENTED)\b', card): return True
+    if re.search(r'Under Contract|Off the Market', card, re.I): return True
     t = page_of(card)
     if not t: return False
     pr = region(t, 'price') or ''
