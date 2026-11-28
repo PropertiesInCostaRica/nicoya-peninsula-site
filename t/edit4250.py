@@ -52,5 +52,11 @@ os.makedirs(B, exist_ok=True)
 for f, t in todo:
     shutil.copy2(W + f, B + f.replace('/', '_'))
     wr(W + f, t)
+OP = 'In the small town of Vainilla, just outside Paquera on the southern Nicoya Peninsula, this lot of 8,444 m2 (over 2 acres) offers room for a home, a vacation retreat or a long term investment. It is offered at US$89,000, about US$10.50 per m2.'
+code = ("from django.db import connection\nc = connection.cursor()\n"
+        "c.execute('UPDATE listing_listing SET title=%%s, header=%%s, meta_title=%%s, opening_paragraph=%%s, meta_description=%%s WHERE id_code=4250', [%r, %r, %r, %r, %r])\n"
+        "try:\n    connection.commit()\nexcept Exception: pass\nprint('@@buscador actualizado')\n") % (NEW_T, NEW_T, NEW_T, OP, OP[:160])
+open('/tmp/edit4250_db.py', 'w').write(code)
+os.system('cd /home/dapps/pcrappsearch && python2 manage.py shell < /tmp/edit4250_db.py 2>&1 | grep -o -E "@@.*|rror.*" | sed "s/^@@//"')
 os.system('bash /root/pcr-git-respaldo.sh >/dev/null 2>&1')
 print('LISTO. Respaldos en ' + B)
