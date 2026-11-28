@@ -34,7 +34,9 @@ CONTENT = '\n'.join([
  '<p>In the small town of Vainilla, just outside Paquera on the southern Nicoya Peninsula, this lot of 8,444 m2 (over 2 acres) offers room for a home, a vacation retreat or a long term investment. It is offered at US$89,000, about US$10.50 per m2.</p>',
  ph([1, 2, 4], True),
  '<h2>Near Los Delfines and Tambor</h2>',
- '<p>The lot is a short drive from the Los Delfines golf and beach community in Tambor and from the calm beaches of Tambor Bay, with Curu Wildlife Refuge and Isla Tortuga close by.</p>',
+ '<p>The lot is a short drive from the Los Delfines golf and beach community in Tambor. Nearby you will find the calm waters of Tambor Bay, Playa Pochote, Playa Muertos, Playa Quesera and Curu Wildlife Refuge.</p>',
+ '<h2>Things to Do Around Vainilla</h2>',
+ '<p>Vainilla is a peaceful base for exploring the peninsula: horseback rides, ATV tours, waterfall hikes, boat trips to Isla Tortuga and night tours to see the glowing bioluminescent water. The town also keeps its traditions alive with community activities and local festivals.</p>',
  ph([5, 6, 7]),
  ph([8, 9, 10]),
  CAP,
@@ -44,7 +46,7 @@ CONTENT = '\n'.join([
  '<p>Life in Vainilla follows the relaxed rhythm of the Nicoya Peninsula Blue Zone, known around the world for its long lived, healthy communities. Montezuma and Santa Teresa, with their beaches, restaurants and surf, are within driving distance.</p>',
  '<h2>Room to Build</h2>',
  '<p>With 8,444 m2 (90,890 sq.ft.) there is space for a private residence, a family compound, gardens or a small eco project, subject to local permits.</p>',
- '<p><strong>Property Highlights</strong></p>\n<ul>\n<li>Lot of 8,444 m2 (90,890 sq.ft.), over 2 acres</li>\n<li>Vainilla, Paquera, southern Nicoya Peninsula</li>\n<li>Near Los Delfines, Tambor Bay and Curu Wildlife Refuge</li>\n<li>Access through the Paquera ferry from Puntarenas</li>\n<li>Close to Montezuma and Santa Teresa</li>\n<li>In the Nicoya Peninsula Blue Zone</li>\n<li>About US$10.50 per m2</li>\n</ul>',
+ '<p><strong>Property Highlights</strong></p>\n<ul>\n<li>Lot of 8,444 m2 (90,890 sq.ft.), over 2 acres</li>\n<li>Vainilla, Paquera, southern Nicoya Peninsula</li>\n<li>Near Los Delfines, Tambor Bay, Playa Pochote, Playa Quesera and Curu Wildlife Refuge</li>\n<li>Horseback riding, waterfalls, Isla Tortuga and bioluminescence tours nearby</li>\n<li>Access through the Paquera ferry from Puntarenas</li>\n<li>Close to Montezuma and Santa Teresa</li>\n<li>In the Nicoya Peninsula Blue Zone</li>\n<li>About US$10.50 per m2</li>\n</ul>',
  '<p>Offered at US$89,000. Contact Properties in Costa Rica for more details or to plan a visit.</p>',
 ])
 def rd(p): return open(p, encoding='utf-8', errors='surrogateescape').read()
