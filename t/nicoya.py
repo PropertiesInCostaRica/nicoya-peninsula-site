@@ -140,7 +140,7 @@ out = re.sub(r'(<section class="sp-hero"[^>]*>\s*)<picture>.*?</picture>', lambd
 out = out.replace('</head>', CSS + '</head>', 1)
 # Mirtha: getting there is now faster; fix the old travel sentence and the Naranjo typo
 out, nfix = re.subn(r"It normally takes longer to travel to the Southern Nicoya Peninsula than to other parts of Costa Rica, but it doesn.t matter since the area has",
-    "Getting to the Southern Nicoya Peninsula is now quicker than to many other parts of Costa Rica, with the Paquera and Naranjo ferries and short flights to Tambor airport, and the area has", out)
+    "Getting to the Southern Nicoya Peninsula is now quicker than to many other parts of Costa Rica, with the Paquera and Naranjo ferries and short flights to C&oacute;bano airport, and the area has", out)
 out = out.replace('>Narajo<', '>Naranjo<').replace(' Narajo', ' Naranjo')
 print('Texto de viaje corregido' if nfix else 'OJO: no encontre la frase de viaje')
 np = W + 'nicoya_peninsula_real_estate-nuevo.html'
