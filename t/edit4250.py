@@ -13,16 +13,13 @@ NEW_C = 'Over 2 acres in the small town of Vainilla, near Los Delfines, Tambor a
 CDN = 'https://cdn.propertiesincostarica.com/properties/Images/paquera-lot/opt/'
 ALT = 'Lot for sale, Vainilla, Paquera, Puntarenas, Nicoya Peninsula, near Los Delfines and Tambor, Blue Zone, Costa Rica'
 IMG = W + 'properties/Images/paquera-lot/opt/'
-EXTRA = [  # (new number, source big photo, source thumb)
+EXTRA = [  # (new number, source big photo, source thumb): #3315 photos 1,5,6,7 and two from #1372
  (5, 'properties/Images/personal-paradise/opt/Image2.jpg', 'properties/Images/personal-paradise/opt/thumbs/Image2.jpg'),
- (6, 'properties/Images/personal-paradise/opt/Image6.jpg', 'properties/Images/personal-paradise/opt/thumbs/Image6.jpg'),
- (7, 'properties/Images/personal-paradise/opt/Image20.jpg', 'properties/Images/personal-paradise/opt/thumbs/Image20.jpg'),
- (8, 'properties/Images/personal-paradise/opt/Image17.jpg', 'properties/Images/personal-paradise/opt/thumbs/Image17.jpg'),
- (9, 'properties/Images/personal-paradise/opt/Image5.jpg', 'properties/Images/personal-paradise/opt/thumbs/Image5.jpg'),
- (10, 'properties/Images/personal-paradise/opt/Image11.jpg', 'properties/Images/personal-paradise/opt/thumbs/Image11.jpg'),
- (11, 'properties/Images/beautifullnwidendless/add/02.jpg', 'properties/Images/beautifullnwidendless/add/thumbs/02.jpg'),
- (12, 'properties/Images/beautifullnwidendless/add/03.jpg', 'properties/Images/beautifullnwidendless/add/thumbs/03.jpg'),
- (13, 'properties/Images/beautifullnwidendless/montezuma.jpg', 'properties/Images/beautifullnwidendless/thumbs/montezuma.jpg'),
+ (6, 'properties/Images/personal-paradise/opt/Image19.jpg', 'properties/Images/personal-paradise/opt/thumbs/Image19.jpg'),
+ (7, 'properties/Images/personal-paradise/opt/Image17.jpg', 'properties/Images/personal-paradise/opt/thumbs/Image17.jpg'),
+ (8, 'properties/Images/personal-paradise/opt/Image14.jpg', 'properties/Images/personal-paradise/opt/thumbs/Image14.jpg'),
+ (9, 'properties/Images/beautifullnwidendless/add/02.jpg', 'properties/Images/beautifullnwidendless/add/thumbs/02.jpg'),
+ (10, 'properties/Images/beautifullnwidendless/add/03.jpg', 'properties/Images/beautifullnwidendless/add/thumbs/03.jpg'),
 ]
 for n, big, th in EXTRA:
     for p in (big, th):
@@ -45,8 +42,6 @@ CONTENT = '\n'.join([
  '<p>The Paquera ferry connects the peninsula with Puntarenas and the rest of the country, so you can arrive from San Jose without driving around the gulf, while Vainilla keeps its quiet, rural character.</p>',
  '<h2>A Real Blue Zone Experience</h2>',
  '<p>Life in Vainilla follows the relaxed rhythm of the Nicoya Peninsula Blue Zone, known around the world for its long lived, healthy communities. Montezuma and Santa Teresa, with their beaches, restaurants and surf, are within driving distance.</p>',
- ph([11, 12, 13]),
- CAP,
  '<h2>Room to Build</h2>',
  '<p>With 8,444 m2 (90,890 sq.ft.) there is space for a private residence, a family compound, gardens or a small eco project, subject to local permits.</p>',
  '<p><strong>Property Highlights</strong></p>\n<ul>\n<li>Lot of 8,444 m2 (90,890 sq.ft.), over 2 acres</li>\n<li>Vainilla, Paquera, southern Nicoya Peninsula</li>\n<li>Near Los Delfines, Tambor Bay and Curu Wildlife Refuge</li>\n<li>Access through the Paquera ferry from Puntarenas</li>\n<li>Close to Montezuma and Santa Teresa</li>\n<li>In the Nicoya Peninsula Blue Zone</li>\n<li>About US$10.50 per m2</li>\n</ul>',
